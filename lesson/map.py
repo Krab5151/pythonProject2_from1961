@@ -173,7 +173,7 @@ print(list(map(len, l)), "Len вложенных списков")
 if __name__ == "__mane__":
     print('UNPACK')
 
-
+# Вывод ключа с мах значением value словаря с вложенными словарями
 # map - применяет через lambda - max к value словаря но выводит ключи
 dict = {1: {"a": 20, "b": 1, "c": 1000, "d": -5},
 2: {"a": 555, "b": 10, "c": -33, "d": 77},
@@ -184,3 +184,7 @@ dict = {1: {"a": 20, "b": 1, "c": 1000, "d": -5},
 res = map(lambda x: max(x, key=x.get), dict.values())
 print(list(res), "map - применяет через"
                  " lambda - max к value словаря но выводит ключи")
+
+# Вывод ключа  с мах значением value простого словаря
+dict = {"a": 20, "b": 1, "c": 1000, "d": -5}
+print(f"Ключ с мах значением value: {max(dict, key=dict.get)}")
