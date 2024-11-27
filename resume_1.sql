@@ -210,3 +210,228 @@ WITH ranked_orders AS (
 SELECT ranked_orders.year, ranked_orders.rnk
 FROM  ranked_orders
 WHERE rnk = 1;
+
+--/////////////////////////////////////////////////////////////////////////////////////////
+
+SELECT product_nm,
+       open_dt
+FROM tinkoff.customers c
+WHERE open_dt >= '2020-10-05'
+;
+
+SELECT *
+FROM tinkoff.calls
+WHERE start_dttm >= '2020-10-05'
+;
+
+WITH customer AS (SELECT customer_id,
+    last_nm,
+    first_nm,
+    middle_nm,
+    open_dt,
+    product_nm
+  FROM tinkoff.customers c
+  WHERE open_dt >= '2020-10-05'),
+
+calls AS (
+  SELECT start_dttm
+  FROM tinkoff.calls
+  WHERE start_dttm >= '2020-10-05'
+)
+SELECT *
+FROM customer,
+    calls
+WHERE open_dt = start_dttm
+;
+
+WITH customer AS (SELECT customer_id,
+    last_nm,
+    first_nm,
+    middle_nm,
+    open_dt,
+    product_nm
+  FROM tinkoff.customers c
+  WHERE open_dt >= '2020-10-05'),
+
+cal AS (
+  SELECT start_dttm,
+        customer_id
+  FROM tinkoff.calls cl
+  WHERE start_dttm >= '2020-10-05'
+)
+SELECT *
+   FROM customer
+   LEFT JOIN cal
+ON customer.customer_id = cal.customer_id
+;
+
+WITH customer AS (SELECT customer_id,
+    last_nm,
+    first_nm,
+    middle_nm,
+    open_dt,
+    product_nm
+  FROM tinkoff.customers c
+  WHERE open_dt >= '2020-10-05'),
+
+cal AS (
+  SELECT start_dttm,
+        customer_id
+  FROM tinkoff.calls cl
+  WHERE start_dttm >= '2020-10-05'
+)
+SELECT *
+   FROM customer
+   LEFT JOIN cal
+ON  cal.start_dttm = customer.open_dt
+WHERE cal.start_dttm = customer.open_dt
+ORDER by customer.open_dt
+;
+
+
+SELECT *,
+  ROW_NUMBER() OVER(PARTITION BY open_dt ORDER by customer_id)
+FROM tinkoff.customers
+WHERE open_dt >= '2020-10-05'
+;
+
+
+WITH cust as
+  (SELECT customer_id,
+    last_nm,
+    first_nm,
+    middle_nm,
+    open_dt as date,
+    product_nm,
+    ROW_NUMBER() OVER(PARTITION BY open_dt ORDER by open_dt, customer_id)
+    FROM tinkoff.customers
+    WHERE open_dt >= '2020-10-05'),
+cals AS (
+  SELECT start_dttm,
+        customer_id
+  FROM tinkoff.calls cl
+  WHERE start_dttm >= '2020-10-05'
+)
+SELECT *
+FROM cust
+LEFT JOIN cals
+-- on cals.customer_id = cust.customer_id
+on cals.start_dttm = cust.date
+-- WHERE cals.start_dttm = cust.date
+;
+
+
+--**********************************************************
+WITH cust as
+  (SELECT customer_id,
+    last_nm,
+    first_nm,
+    middle_nm,
+    open_dt,
+    product_nm,
+    ROW_NUMBER() OVER(PARTITION BY open_dt ORDER by open_dt, customer_id)
+    FROM tinkoff.customers
+    WHERE open_dt >= '2020-10-05'),
+cals AS (
+  SELECT start_dttm as date,
+        customer_id
+  FROM tinkoff.calls cl
+  WHERE start_dttm >= '2020-10-05'
+)
+SELECT cust.last_nm,
+    cust.first_nm,
+    cust.middle_nm,
+    cals.date,
+    cust.open_dt,
+    cust.product_nm
+FROM cust
+LEFT JOIN cals
+on cals.customer_id = cust.customer_id
+WHERE cals.date = cust.open_dt
+ORDER BY cust.open_dt
+;
+
+
+WITH customer AS (SELECT customer_id,
+    last_nm,
+    first_nm,
+    middle_nm,
+    open_dt,
+    product_nm
+  FROM tinkoff.customers c
+  WHERE open_dt >= '2020-10-05'),
+
+cal AS (
+  SELECT start_dttm,
+        customer_id
+  FROM tinkoff.calls cl
+  WHERE start_dttm >= '2020-10-05'
+)
+SELECT *
+   FROM customer
+   LEFT JOIN cal
+ON  cal.customer_id = customer.customer_id
+WHERE cal.start_dttm = customer.open_dt
+ORDER by customer.open_dt
+;
+
+SELECT cs.last_nm,
+    cs.first_nm,
+    cs.middle_nm,
+    cl.start_dttm as date,
+    cs.open_dt,
+   cs.product_nm
+FROM tinkoff.calls cl
+LEFT JOIN tinkoff.customers cs
+on cl.customer_id = cs.customer_id
+WHERE cl.start_dttm >= '2020-10-05' and cl.start_dttm = cs.open_dt
+ORDER BY date
+;
+
+
+
+SELECT *
+FROM tinkoff.account_statuses ac
+;
+
+SELECT to_char(ac.date, 'MM') as month
+FROM tinkoff.account_statuses ac
+;
+
+SELECT *
+FROM tinkoff.account_statuses ac
+WHERE ac.acount_status IN ('новый', 'активирован', 'утилизирован') AND to_char(ac.date, 'MM') = '05'
+;
+
+SELECT to_char(ac.date, 'MM') as month,
+  COUNT(to_char(ac.date, 'MM'))
+  FROM tinkoff.account_statuses ac
+  WHERE ac.acount_status IN ('новый', 'активирован', 'утилизирован')
+  GROUP BY month
+ORDER BY month
+;
+
+WITH
+work as
+(SELECT
+   to_char(ac.date, 'MM') as month,
+  COUNT(to_char(ac.date, 'MM')) as cntw
+  FROM tinkoff.account_statuses ac
+  WHERE ac.acount_status IN ('новый', 'активирован', 'утилизирован')
+  GROUP BY month
+ORDER BY month),
+non_work AS
+(SELECT
+   to_char(ac.date, 'MM') as month,
+  COUNT(to_char(ac.date, 'MM')) as cntnw
+  FROM tinkoff.account_statuses ac
+  WHERE ac.acount_status IN ('заблокирован', 'закрыт')
+  GROUP BY month
+ORDER BY month)
+SELECT work.month,
+      work.cntw,
+      non_work.cntnw
+FROM work
+JOIN non_work
+ON work.month = non_work.month
+;
