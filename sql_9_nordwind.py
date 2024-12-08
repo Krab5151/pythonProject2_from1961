@@ -5,7 +5,8 @@ import psycopg2
 conn = psycopg2.connect(
     dbname="Eduson",  # имя базы данных
     user="student",  # ваш логин
-    password="qweasd1234567890",  # ваш пароль
+    # password="qweasd1234567890",  # ваш пароль
+    password="QweAsd1234567890",  # ваш пароль
     host="185.86.147.205",  # хост, например, localhost
     port="5432"  # порт, стандартный для PostgreSQL
 )
