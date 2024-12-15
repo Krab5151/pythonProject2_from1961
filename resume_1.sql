@@ -171,4 +171,52 @@ SELECT year, month, an_group as group,
 FROM t2
 ;
 
+WITH t1 as(
+  SELECT name,
+         seat,
+         LEAD(name) OVER() as ld
+  FROM students
+  where seat % 2 != 0
+),
+t2 as (
+       SELECT name,
+         seat,
+         LAG(name) OVER() as lg
+  FROM students
+  where seat % 2 = 0
+)
 
+
+SELECT  t1.name as odd,
+        t2.name as even
+FROM t1
+CROSS JOIN t2
+WHERE t1.seat + 1 = t2.seat
+;
+
+
+
+
+WITH t1 as(
+  SELECT name,
+         seat,
+         LEAD(name) OVER() as ld
+  FROM students
+  where seat % 2 != 0
+),
+t2 as (
+       SELECT name,
+         seat,
+         LAG(name) OVER() as lg
+  FROM students
+  where seat % 2 = 0
+)
+SELECT
+t1.seat as st1,
+t1.name as odd,
+t2.seat as st2,
+        t2.name as even
+FROM t1
+CROSS JOIN t2
+WHERE t1.seat + 1 = t2.seat
+;
