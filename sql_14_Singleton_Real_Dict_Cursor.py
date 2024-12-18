@@ -1,7 +1,7 @@
 """
 Запросы через экземпляры класса,
 Singleton с помощью __new__ , для запросов через один и тот же Экземпляр
-Курсор простой для выполнения запросов
+Курсор RealDictCursor для вывода запросов в словароподобном виде
 """
 
 import psycopg2
@@ -38,8 +38,14 @@ class DB333:
             user=user,
             password=password
         )
+        " Простой курсор "
+        # self.cur = self.conn.cursor()
 
-        self.cur = self.conn.cursor()
+        """ Курсор для вывода запроса словароподобном виде
+            для работы с PANDAS
+        """
+        self.cur = self.conn.cursor(cursor_factory=RealDictCursor)
+
 
         # Подтверждение автокоммита в случае запуска с autocommit = True
         if autocommit:
@@ -111,28 +117,50 @@ print(f'Запрос из orders через Экземпляр в NorthWind: {re
 
 res_N2 = db1.select(
     """
-    select order_id
-    from order_details
-    limit 4
-    """
-)
-
-print(res_N2)
-
-#  Преобразование запроса из orders
-id_ord = tuple(i[0] for i in res_N1)
-print(f'Преобразование запроса из orders в tuple(int): {id_ord}')
-
-#  Парматризированный запрос
-res_N3 = db1.select(
-    """
     select *
     from order_details
-    where order_id in %s
-    """,
-id_ord
+    limit 5
+    """
 )
 
-print(res_N3)
+# До обработки, res_N2 список словароподобных объектов RealDictCursor
+print(res_N2, ">>>>>")
+
+
+#  Преобразование явное Словаря в список имён столбцов
+column = [list(row.keys()) for row in res_N2][0]
+print(column)
+
+# Преобразование явное Словаря в список значений
+val = [list(row.values()) for row in res_N2]
+print(val)
+
+
+
+# od_res = []
+# for i in res_N2:
+#     val = [i for i in res_N2[0].values()]
+#     od_res.append(val)
+# print(od_res)
+
+# r = [i for i in res_N2]
+# print(r)
+
+# print(res_N2)
+#
+# #  Преобразование запроса из orders
+# id_ord = tuple(i[0] for i in res_N1)
+# print(f'Преобразование запроса из orders в tuple(int): {id_ord}')
+#
+# res_N3 = db1.select(
+#     """
+#     select *
+#     from order_details
+#     where order_id in %s
+#     """,
+# id_ord
+# )
+#
+# print(res_N3)
 
 print(db2 is db1)

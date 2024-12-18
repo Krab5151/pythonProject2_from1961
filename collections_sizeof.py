@@ -18,6 +18,10 @@ d = defaultdict(list)
 s = [d[_] for _ in range(5)]
 print(d, "Инициировали пустые словари с ключами из  range(5)")
 
+# Инициализация Словаря со всатвкой Value
+d1 = defaultdict(list)
+s1 = [d1[j].append(i) for i, j in enumerate("asdf")]
+print(d1, "Инициализация Словаря со всатвкой Value")
 
 g = defaultdict()  # инициализация словаря без key и без value
 g[88] = 55  # присваивание key 88 - value 55
