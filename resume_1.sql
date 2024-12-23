@@ -220,3 +220,20 @@ FROM t1
 CROSS JOIN t2
 WHERE t1.seat + 1 = t2.seat
 ;
+
+-- //////////////////////////////////////////////////////////////
+--Требуется вывести уникальное количество людей из города “Москва”,
+-- которые купили “Телефон” в сентябре и октябре.
+select month, SUM(cnt :: int) as cnt_people
+from  (SELECT to_char(p.created_at, 'Month') as month,
+        city,
+        COUNT(user_id) as cnt
+    FROM ozon.users u
+    RIGHT JOIN ozon.purchases p
+    ON u.id = p.user_id
+    WHERE to_char(p.created_at, 'MM') in ('09','10') and city = 'Москва'
+    GROUP BY city, month, user_id
+    HAVING COUNT(user_id) = 1) as t1
+GROUP BY month
+ORDER by cnt_people DESC
+;
