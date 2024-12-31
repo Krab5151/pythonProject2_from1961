@@ -152,8 +152,8 @@ min_max = np.linspace(min(data["make"]), max(data["make"]), 20)
 # на основе kde строим  pdf
 pdf = kde.pdf(min_max)
 plt.hist(data["make"], bins=10, density=True, alpha=0.5, label='Histogram')
-plt.plot(min_max, pdf)
-plt.show()
+# plt.plot(min_max, pdf)
+# plt.show()
 
 
 # KDE

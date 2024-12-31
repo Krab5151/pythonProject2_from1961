@@ -237,3 +237,81 @@ from  (SELECT to_char(p.created_at, 'Month') as month,
 GROUP BY month
 ORDER by cnt_people DESC
 ;
+
+--//////////////////////////////////////////////////////////////
+--Для каждого анализа вывести: ID анализа, кол-во продаж
+--за 2019 год и кол-во продаж за 2020 год.
+-- Столбцы по условию year2019 и year2020
+-- Транспонируем таблицу, строки 2019 и 2020 в столбцы year2019 и year2020
+
+select an,
+-- Создаём столбцы year2019 и year2020 и помещаем значения с инф о количестве проданных анализов
+    MAX(CASE
+        WHEN dt = '2019' THEN cnt_ord
+        ELSE NULL
+        END ) AS year2019,
+     MAX(CASE
+        WHEN dt = '2020'  THEN cnt_ord
+        ELSE NULL
+        END ) AS year2020
+-- Подзапрос где джойним таблицу заказов с таблицей справочником инф по анализам
+from    (SELECT
+        an.an_id as an,
+        to_char(ord_datetime, 'YYYY') as dt,
+        COUNT(ord_an)  as cnt_ord
+    FROM orders o
+    JOIN analysis an
+    on an_id = ord_an
+    WHERE to_char(ord_datetime, 'YYYY') in ('2019', '2020')
+    GROUP BY dt, an.an_id
+    ORDER BY dt) as t1
+-- Группировка по id анализов обязательна иначе в столбцах будет NULL
+GROUP BY an
+ORDER BY an
+;
+
+--////////////////////////////////////////////////////////////////////////
+--Выведите следующую информацию:
+--ID анализа
+--количество продаж каждого анализа в штуках с 01.03.2019 по 01.03.2020 (включительно обе даты)
+--группа продаж по количеству продаж каждого анализа
+
+SELECT an_id,
+        amount,
+        CASE        -- CASE используем с and
+            WHEN amount > 40 THEN 2
+            WHEN amount > 30 AND amount <= 40 THEN 1
+            WHEN amount <= 30  THEN 0
+            ELSE 0
+         END gr
+FROM
+    (SELECT
+        an_id,
+        COUNT (ord_an) as amount
+    FROM orders
+    LEFT JOIN analysis
+    ON an_id = ord_an
+    WHERE ord_datetime BETWEEN '2019-03-01' AND '2020-03-01'
+    GROUP BY  an_id
+    ORDER BY an_id) as t1
+;
+
+SELECT an_id,
+        amount,
+        CASE     -- CASE используем с BETWEEN
+            WHEN amount > 40 THEN 2
+            WHEN amount BETWEEN  30 AND 40 THEN 1
+            WHEN amount <= 30  THEN 0
+            ELSE 0
+         END gr
+FROM
+    (SELECT
+        an_id,
+        COUNT (ord_an) as amount
+    FROM orders
+    LEFT JOIN analysis
+    ON an_id = ord_an
+    WHERE ord_datetime BETWEEN '2019-03-01' AND '2020-03-01'
+    GROUP BY  an_id
+    ORDER BY an_id) as t1
+;
