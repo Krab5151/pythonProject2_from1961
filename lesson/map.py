@@ -238,5 +238,4 @@ for col in df11.columns[1:]:
     df11_cp['NEW'+'_' + col] = column_df != avrg  # Сравниваем оригинальные столбцы  из DF и их Средние из group_mean
 
     print(df11[col], avrg, '\n') # Для информации о процессе вывели оригинальные столбцы  из DF и их Средние из group_mean
-
 print(df11_cp, '\n')

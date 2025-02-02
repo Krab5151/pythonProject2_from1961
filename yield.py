@@ -208,6 +208,7 @@ def foo(x):
         x += 1
         yield x
 
+
 f = foo(0)
 print(f'Бесконечный Счётчик № {next(f)}')
 print(f'Бесконечный Счётчик № {next(f)}')
