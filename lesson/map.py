@@ -46,7 +46,7 @@ lis_str = ['1', '5', '9']
 a = (int(x) for x in lis_str)
 print(list(a),'////')
 
-m_ap = map(type, ['1', '5', '9'])
+m_ap = map(type, ['1', 5, '9'])
 for ilis in m_ap:
     print(ilis, '||||')
 
@@ -136,6 +136,9 @@ i = [1,2,100]
 print([x for x in map(sum, zip(i, u)) ], " Поэлементное сложение 2х списков")
 
 
+# Поэлементное умножение 2х списков
+print(list(map(lambda x, y: x * y, u, i)), 'Поэлементное умножение/вычитание/ и тд 2х списков')
+
 # Маркировка ОБ по условию
 v =  [5, 10, 3, 8, 12, 7]
 print(list(map(lambda x : 1 if x > 5 else 0, v)), "Маркировка ОБ по условию")
@@ -202,6 +205,8 @@ category_map = {"A": 100, "B": 200, "C": 300}
 __doc__ = '''Создаём столбец "Mapped" в котором отображены values для соответствующих значений из "Category"'''
 df["Mapped"] = df["Category"].map(category_map)
 print(df)
+
+
 
 # Подсчёт Пропусков через сравнивание столбцов из DF c их средними из группировки
 import pandas as pd

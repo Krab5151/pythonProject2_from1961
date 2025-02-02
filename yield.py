@@ -58,7 +58,7 @@ for i in count_up(-1):
 # for ig in range(10, 5, -1):
 #     print(( ig ))
 
-# """ generator in generator / subgenerstor"""
+__doc__ = """ generator in generator / subgenerstor"""
 #
 # def sub_generator():
 #     yield 'Kirill'
@@ -71,7 +71,7 @@ for i in count_up(-1):
 #     print (i_gen, end=' ')
 
 
-# """ klassik generator """
+__doc__ = """ klassik generator """
 #
 # def count_up(n):
 #     res = []
@@ -117,7 +117,7 @@ print(type(cr_gen()))
 #     print(cr_l)
 
 
-#   Цикл в Цикле
+__doc__ = """Цикл в Цикле"""
 def f():
     n = 0
     while n < 2:
@@ -132,7 +132,7 @@ for i in f():
     print(i, " Цикл в Цикле")
 
 
-# По условию отсекаем часть (0,5) генерируемых значений
+__doc__ = '''По условию отсекаем часть (0,5) генерируемых значений'''
 def f():
     n = 0
     while n < 2:
@@ -151,15 +151,15 @@ def cr_gen(x, y):
     yield (c)
 
 
-for i in cr_gen(5, 6):
-    print(i)
-print(cr_gen(2, 3))
+# for i in cr_gen(5, 6):
+#     print(i)
+# print(cr_gen(2, 3))
 
 import requests
 
 urls = ('http://headfirstlabs.com', 'http://twitter.com', 'https://www.oreilly.com/')
 
-""" Другой вариант - поместить значения перебираемые из ф-ции gen_req_ex (urls)
+__doc__ = """ Другой вариант - поместить значения перебираемые из ф-ции gen_req_ex (urls)
     в ТРИ переменные: s , d , f, тк yield возвращает три значения а затем их вывести.
     Используем yield. Результат будет без скобок"""
 
@@ -169,14 +169,14 @@ def gen_req_ex(urls: tuple) -> tuple:
         yield (len(resp.content), resp.status_code, resp.url)
 
 
-for s, d, f in (gen_req_ex(urls)):
-    print(s, d, f, '|/|/')
+# for s, d, f in (gen_req_ex(urls)):
+#     print(s, d, f, '|/|/')
 
-"""Если результат выводить через одну переменную, то выйдет кортеж"""
-for k in (gen_req_ex(urls)):
-    print(k, '///')
+__doc__ = """Если результат выводить через одну переменную, то выйдет кортеж"""
+# for k in (gen_req_ex(urls)):
+#     print(k, '///')
 
-"""_________________Вывод словаря_____________________________________"""
+__doc__ = """_________________Вывод словаря_____________________________________"""
 
 
 def gen_req_ex(urls: tuple) -> tuple:
@@ -184,11 +184,11 @@ def gen_req_ex(urls: tuple) -> tuple:
         yield {len(resp.content): [resp.status_code, resp.url]}
 
 
-for k in (gen_req_ex(urls)):
-    print(k, '///')
+# for k in (gen_req_ex(urls)):
+#     print(k, '///')
 
 
-# три подряд yield выполняются поочерёдно
+__doc__ = 'три подряд yield выполняются поочерёдно'
 def foo(x):
     while True:
         x += 1
@@ -202,5 +202,16 @@ res = [next(f) for _ in range(3)]
 print(f"выполненые три действия: {res}")
 
 
+__doc__ = ''' Бесконечный Счётчик '''
+def foo(x):
+    while True:
+        x += 1
+        yield x
+
+f = foo(0)
+print(f'Бесконечный Счётчик № {next(f)}')
+print(f'Бесконечный Счётчик № {next(f)}')
+print(f'Бесконечный Счётчик № {next(f)}')
+print(f'И ещё № {[next(f) for _ in range(2)]}')
 
 
