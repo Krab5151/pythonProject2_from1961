@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import seaborn as sns
 import matplotlib.pyplot as plt
 
 
@@ -40,6 +41,12 @@ df777 = pd.DataFrame({
     'B': ['M', 'F', 'F', 'F', 'M', 'F', 'F', 'F', 'F', 'M', 'M', 'M', 'M', 'F', 'F', 'F', 'M', 'M', 'F', 'F']
 })
 
+df7777 = pd.DataFrame({
+    'A': [34, 44, 40, 20, 32, 32, 49, 44, 34, 30, 45, 48, 36, 38, 47, 27, 24, 28, 25, 46],
+    'B': ['M', 'W', 'W', 'F', 'M', 'F', 'W', 'F', 'W', 'M', 'M', 'S', 'S', 'F', 'F', 'F', 'M', 'M', 'F', 'S']
+})
+
+
 df44 = pd.DataFrame({"A": [5, 2, 2, 4, 5],
                      "B": [50, 20, 50, 40, 50],
                      "C": [300, 300, 300, 400, 300]},
@@ -76,3 +83,15 @@ df11_cop = df11.copy()
 for col in df11.columns[1:]:
     df11_cop['NEW'+'_' + col] = df11[col] != df11['A'].map(mean_a[col])
     print(df11_cop)
+
+
+# Столбикова Частотная Диаграмма без hue='B' все столбцы подписаны
+ax = sns.countplot(x='B', data=df7777)
+ax.bar_label(ax.containers[0])
+plt.show()
+
+# Столбикова Частотная Диаграмма с hue='B', используем итерацию для подписи столбов
+ax = sns.countplot(x='B', hue='B', data=df7777)
+for contain in ax.containers:
+    ax.bar_label(contain)
+plt.show()

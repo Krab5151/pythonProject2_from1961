@@ -24,7 +24,7 @@ yield используется в функциях так же, как и return
 когда она наткнётся на yield — тогда она вернёт первое значение из цикла.
 На каждый следующий вызов будет происходить ещё одна итерация написанного вами цикла,
 возвращаться будет следующее значение — и так пока значения не кончатся."""
-
+from itertools import islice
 
 def count_up(n):
     while n != 10:
@@ -216,3 +216,57 @@ print(f'Бесконечный Счётчик № {next(f)}')
 print(f'И ещё № {[next(f) for _ in range(2)]}')
 
 
+__doc__ = '''Разворачивание значений генератора'''
+
+
+# 1-й Вариант на прямую
+def foo(x):
+    while True:
+        x = 2
+        yield x
+
+
+f = foo(2)
+# next(f)
+
+one, two, three = next(f), next(f), next(f)
+print(f'Вызов третьего значения: {three}')
+
+
+# 2-й Вариант через list
+def foo(x):
+    while True:
+        x = 2
+        yield x
+
+f = foo(2)
+
+one, two, three = [next(f) for _ in range(3)]
+print(f'Вызов второго значения: {two}')
+
+# 3-й Вариант через list
+f = foo(2)
+one, two, three = islice(f, 3)
+print(f'Для контроля количества значений: {one, two, three}')
+
+__doc__ = '''Менеджер управлением вызова функций'''
+
+
+def foo1():
+    return 'функция foo1'
+
+
+def foo2():
+    return 'функция foo2'
+
+
+def foo():
+    while True:
+        yield foo1()
+        yield foo2()
+
+
+f = foo()
+
+a, b = next(f), next(f)
+print(f'Вызов {a}')
