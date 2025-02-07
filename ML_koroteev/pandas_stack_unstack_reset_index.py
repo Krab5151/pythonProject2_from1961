@@ -88,10 +88,15 @@ for col in df11.columns[1:]:
 # Столбикова Частотная Диаграмма без hue='B' все столбцы подписаны
 ax = sns.countplot(x='B', data=df7777)
 ax.bar_label(ax.containers[0])
-plt.show()
+# plt.show()
+
 
 # Столбикова Частотная Диаграмма с hue='B', используем итерацию для подписи столбов
 ax = sns.countplot(x='B', hue='B', data=df7777)
 for contain in ax.containers:
     ax.bar_label(contain)
-plt.show()
+# plt.show()
+
+
+# Вывод DF со строками фильтрованных по заданному значению в нужной колонке
+print(df777[df777['B'] == 'F'])
