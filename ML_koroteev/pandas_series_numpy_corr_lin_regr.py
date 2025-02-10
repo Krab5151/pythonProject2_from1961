@@ -72,7 +72,7 @@ df = pd.DataFrame({"A": [1, 2, 3], "B": [4, 5, 6], "C": [7, 8, 9]})
 
 print(df, "в DataFrame передаём заголовок + строка, вывод заголовок + столбец ")
 
-# Удаляем строку, вывод удалённый столбец
+# Вырезаем строку и сохраняем в переменную d, вывод удалённый столбец
 df = pd.DataFrame({"A": [1, 2, 3], "B": [4, 5, 6], "C": [7, 8, 9]})
 d = df.drop("A", axis=1)
 print(d, "Удаляем строку, вывод без удалённого  столба")
@@ -91,7 +91,7 @@ d = {i: [x, y, z] for i, x, y, z in zip(["Алиса", "Боб", "Клара", "
                                         [10, 8, 12, 11, 9, 13])}
 
 
-# Имена строк
+# Индексы / Имена строк
 labels = ["make", "prog", "time"]
 data = pd.DataFrame(d, index=labels)
 print(data)
@@ -105,17 +105,22 @@ print(data_transposed)
 correlation = data.loc['make'].corr(data.loc['prog'])  # loc - доступ к группе строк или столбов
 print(f"\nКорреляция между 'make' и 'prog': {correlation}")
 
-# 3. Линейная регрессия между 'make' и 'prog'
+# Выделяем предикторы и целевую переменную ДАТАСРЕЗОМ, получаем 2х мерные массивы
 X = np.array(data.loc['make']).reshape(-1, 1)
 y = np.array(data.loc['prog'])
 
-print(data.loc["prog":"time", "Алиса"], "\n")
+print(data.loc["make":"time", "Алиса"], "\n")  # Значения в строке/индексе/объекте Алиса в столбцах от "make" до "time"
 print(data_transposed.loc["Боб":"Эмма", "time"], "\n")  # все значения time от Боб до Эмма
 
+
+# 3. Линейная регрессия между 'make' и 'prog'
 model = LinearRegression().fit(X, y)
 print(f"\nКоэффициент наклона: {model.coef_[0]}")
-print(f"Перехват (intercept): {model.intercept_}")
+print(f"Перехват (intercept): {model.intercept_}", '>>>>>')
 
+# Предсказываем Целевую
+y_predict = model.predict(X)
+print(f'Предсказываем Целевую: {y_predict}')
 
 # Множественная регрессии
 

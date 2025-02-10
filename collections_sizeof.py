@@ -199,3 +199,10 @@ with open('point.csv') as file:
     for line in csv.reader(file):
         point = Point._make(line)
         print(point)
+
+
+d2 = defaultdict(list)
+# [d2[i].append(j) for i, j in zip(['a', 'f', 'w'], [11, 205, 0.3])]
+for i, j in zip(['a', 'f', 'w'], [11, 205, 0.3]):
+    d2[i].append(j)
+print(d2)
