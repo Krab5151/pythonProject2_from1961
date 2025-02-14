@@ -1,6 +1,8 @@
 """ COLLECTION пакет для обработки словарей,списков,множеств и тд"""
 import csv
 from collections import defaultdict, deque, OrderedDict, Counter, namedtuple, ChainMap
+from itertools import islice
+
 
 # defaultdic нужен для создания словаря со значением по умолчанию, значение подставляется
 # при обращении к несуществующему ключу.То есть можно наклепать ключей без значений с последующей вставкой значений
@@ -101,7 +103,7 @@ b = [(50, '*************'), (50, 'Python'), (50, 'HBase'), (50, 'Java'), (50, 'S
 a_deque = deque()
 for ide in b:
     a_deque.append(ide)
-a_deque.appendleft("okokokokokokokookokok")
+a_deque.appendleft("okokokokokokokookokok")  # Вставляем слева
 a_deque.appendleft("9595959")
 a_deque.popleft()  # забираем значения и слева и справа. здесь удалено "9595959"
 a_deque.appendleft("888888888888888888888")
@@ -148,6 +150,8 @@ print(chain, '  //// ChainMap', "\n")
 counter = Counter('Yellow Blue black 1282297033')
 print(counter, ' //// Counter', "\n")
 
+print(f'Преобразование объекта Counter в словарь ->>>>>{dict(counter)}')
+
 #   (3) - выводит список кортежей с тремя самыми повторяемыми символами, [2] -  индекс нужного кортежа из списка
 print(counter.most_common(3)[2][0], ' //// most_common', "\n")  # [0] - индекс значения из выбраного кортежа
 
@@ -192,17 +196,29 @@ Dog = namedtuple('Dog', 'name breed age color')  # сюда диа аргуме�
 sandy = Dog('sandy', 'rizen', '15', 'balck')  # наименования признаков
 print(sandy, " наименования признаков")
 print(sandy[0:2], " обращение по индексу")  # обращение по индексу
-print(sandy.color, " Обращение по атрибуту")  # Обращение по атрибуту
+print(sandy.color, " Обращение по атрибуту", '\n')  # Обращение по атрибуту
 
 Point = namedtuple('Point', 'x y z')  # Любое количество атрибутов x, y, z и так далее
 with open('point.csv') as file:
     for line in csv.reader(file):
         point = Point._make(line)
-        print(point)
+        print(point, '\n')
 
 
 d2 = defaultdict(list)
 # [d2[i].append(j) for i, j in zip(['a', 'f', 'w'], [11, 205, 0.3])]
 for i, j in zip(['a', 'f', 'w'], [11, 205, 0.3]):
     d2[i].append(j)
-print(d2)
+print(d2, '\n')
+
+# Скользящее окно, n - ширина окна
+a = 'asdqwer'
+def sliding_window(iterable, n):
+    it = iter(iterable)
+    window = deque(islice(it, n), maxlen=n)
+    if len(window) == n:
+        yield tuple(window)
+    for x in it:
+        window.append(x)
+        yield tuple(window)
+print(list(sliding_window(a, 3)), '\n')
