@@ -1,8 +1,18 @@
-""" COLLECTION пакет для обработки словарей,списков,множеств и тд"""
+"""
+dataclasses – удобный способ создавать классы данных.
+heapq – работа с очередями с приоритетами.
+bisect – поиск вставки и бинарный поиск.
+deque (из collections) – для эффективной работы с двусторонними очередями.
+statistics – базовые статистические вычисления.
+math и cmath – стандартные математические операции и комплексные числа.
+timeit – измерение времени выполнения кода.
+"""
+
+__doc__ = """ COLLECTION пакет для обработки словарей,списков,множеств и тд"""
+
 import csv
 from collections import defaultdict, deque, OrderedDict, Counter, namedtuple, ChainMap
 from itertools import islice
-
 
 # defaultdic нужен для создания словаря со значением по умолчанию, значение подставляется
 # при обращении к несуществующему ключу.То есть можно наклепать ключей без значений с последующей вставкой значений
@@ -167,11 +177,9 @@ for k in range(len(documents)):
 
 # Создание объекта Counter для подсчета слов из файла
 with open('cdata.csv', 'r') as file:
-
     word_counter = Counter(file.read().split())
 
 print(word_counter, "Создание объекта Counter для подсчета слов из файла", "\n")
-
 
 # Сложение и вычитание объектов Counter
 counter1 = Counter(['a', 'b', 'c', 'a', '123'])
@@ -179,7 +187,6 @@ counter2 = Counter(['a', 'b', 'a', 'd'])
 counter3 = Counter(['123'])
 
 print(counter1 + counter2 + counter3, "Сложение и вычитание объектов Counter", "\n")
-
 
 # Сложение словарей с Counter
 dict1 = {'a': 1, 'b': 2}
@@ -204,7 +211,6 @@ with open('point.csv') as file:
         point = Point._make(line)
         print(point, '\n')
 
-
 d2 = defaultdict(list)
 # [d2[i].append(j) for i, j in zip(['a', 'f', 'w'], [11, 205, 0.3])]
 for i, j in zip(['a', 'f', 'w'], [11, 205, 0.3]):
@@ -213,6 +219,8 @@ print(d2, '\n')
 
 # Скользящее окно, n - ширина окна
 a = 'asdqwer'
+
+
 def sliding_window(iterable, n):
     it = iter(iterable)
     window = deque(islice(it, n), maxlen=n)
@@ -221,4 +229,6 @@ def sliding_window(iterable, n):
     for x in it:
         window.append(x)
         yield tuple(window)
+
+
 print(list(sliding_window(a, 3)), '\n')
