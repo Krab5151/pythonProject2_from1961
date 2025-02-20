@@ -6,12 +6,15 @@ import random
 import pprint
 import csv
 
-""" получение  data из сайта deltaks"""
+
+# TODO получение  data из сайта deltaks
 
 CSV = "cards.csv"
 
-HEADERS = {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-           "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0"}
+HEADERS = {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
+}
 HOST = "https://deltaks.ru/"  # вытащить можно только data из url передано в BS, HOST всегда оканчивается "/"
 
 URL_ABOUT = "https://deltaks.ru/Shop/About/"  # url для EX сведений о компании
@@ -20,12 +23,17 @@ URL_ARTIKLE = "https://deltaks.ru/Shop/Article"  # url для extract(ЕХ) ст
 
 
 # TODO ask
-def ask_soup(url, params=" "):  # url -  сайт / params=" " - именованный аргумент что бы далее присвоить значение
-    html = requests.get(url, headers=HEADERS,  # headers, params в моём случае не нужны
-                        params=params)  # requests.get - запрос сайта по адресу из переменной url, text - запрос текста
-    soup = BeautifulSoup(html.text, 'lxml')  # soup - ЭКЗ класса BS, 'lxml' - парсер которым будем пользоваться
+def ask_soup(
+    url, params=" "
+):  # url -  сайт / params=" " - именованный аргумент что бы далее присвоить значение
+    html = requests.get(
+        url, headers=HEADERS, params=params  # headers, params в моём случае не нужны
+    )  # requests.get - запрос сайта по адресу из переменной url, text - запрос текста
+    soup = BeautifulSoup(
+        html.text, "lxml"
+    )  # soup - ЭКЗ класса BS, 'lxml' - парсер которым будем пользоваться
 
-    "Методы BeautifulSoup"
+# TODO "Методы BeautifulSoup"
 
     # print("HTML: {0}, name:{1}, text: {2}".format(soup.div, soup.div.name, soup.div.text), "\n")  # вывод тега и его содержимого
 
@@ -75,25 +83,27 @@ def ask_soup(url, params=" "):  # url -  сайт / params=" " - именова�
     # content_1 = soup.find("div", class_="container").find("div", class_="container").find(find\
     #     #     ("div", class_="container body-content")) \
     #     .find("span", style="margin-left: 40px")
-    # TODO cards
+# TODO cards
     cards = []
-    "ВАЖНО! Правильно составить доступ к родителю, очерёдность методов find и find_all"
-    contents = soup.find("div", id="index").find_all \
-        ("div", class_="card card-body flex-fill my-flex")  # id - родитель для каталога
+# TODO "ВАЖНО! Правильно составить доступ к родителю, очерёдность методов find и find_all"
+    contents = soup.find("div", id="index").find_all(
+        "div", class_="card card-body flex-fill my-flex"
+    )  # id - родитель для каталога
 
     if html.status_code == 200:  # проверка на отклик сайта
         for content in contents:  # форлуп вы атрибутов в теге "а"
             total_cards = {
                 "title_": content.find("a").find("img").get("title"),
                 "href_": HOST + content.find("a").get("href"),
-                "image_": HOST + content.find("a").find("img").get("src")
+                "image_": HOST + content.find("a").find("img").get("src"),
             }
             cards.append(total_cards)
         return cards
     else:
         print("Error")
 
-    # TODO parser
+
+# TODO parser
 
 
 def save_cards(path):  # сохранение в csv
@@ -102,14 +112,12 @@ def save_cards(path):  # сохранение в csv
         write = csv.writer(file, delimiter=" ")  # delimiter - разделитель
         write.writerow(["Name product", "link on product", "link on image"])
         for item in content:
-            write.writerow([item["title_"], item["href_"], item["image_"]] )
+            write.writerow([item["title_"], item["href_"], item["image_"]])
     with open(path, "r") as read:
         print(read.read())
 
 
-
 save_cards(CSV)
-
 
 
 # def parser(url):

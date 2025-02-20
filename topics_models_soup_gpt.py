@@ -13,13 +13,28 @@ def fix_unicode(text):
 
 url = "http://radar.oreilly.com/2010/06/what-is-data-science.html"  # сохраняем сайт в переменную
 html = requests.get(url).text  # requests.get - запрос сайта по адресу из переменной url, .text - очистка от тегов и тд
-soup = BeautifulSoup(html, 'html5lib')  # 'html5lib' - формат возвращаемого текста из переменной html
+soup = BeautifulSoup(html, 'lxml')  # 'html5lib' - парсер, формат возвращаемого текста из переменной html
 
-content = soup.find("div", "entry-content")  #
+# TODO Выведем все классы у `div`, чтобы понять, какие есть
+for div in soup.find_all("div"):
+    ...
+    # print(div.get("class"))
+
+# TODO Вывод ограниченного числа Символов html, в данном случае 20000
+# print(html[:20000])
+
+
+# TODO Вывод текста тега <p> в чистом виде
+text = soup.p.text
+print(text)
+print(text.split())
+
+content = soup.find("div", class_="content")  # Тег "div" по которому будем искать в html слова или символы
+print(content)
 regex = r"[\w']+|[\.]"  # re выбирает слова из тега "div" класса "entry-content"
 
 document_radar = []
-
+print(document_radar)
 
 for paragraph in content("p"):  # извлекаем текст с тегом <р> из ("div", "entry-content")
     words = re.findall(regex, fix_unicode(paragraph.text))  # отбор с помощью re слов

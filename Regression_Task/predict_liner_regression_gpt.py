@@ -35,3 +35,51 @@ X_new = np.array([[6, 7, 8]])
 y_pred = model.predict(X_new)
 
 print(f'Предсказанное значение для X_new={X_new.tolist()[0]}: {y_pred[0]:.2f}')
+
+
+from sklearn.datasets import load_iris, make_regression
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import accuracy_score, mean_squared_error
+
+# Классификация
+# Загрузка данных
+data = load_iris()
+X, y = data.data, data.target
+
+# Разделение данных
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
+
+# Обучение модели
+clf = RandomForestClassifier()
+clf.fit(X_train, y_train)
+
+# Оценка модели
+train_accuracy = accuracy_score(y_train, clf.predict(X_train))
+test_accuracy = accuracy_score(y_test, clf.predict(X_test))
+
+print(f"Train Accuracy: {train_accuracy:.2f}")
+print(f"Test Accuracy: {test_accuracy:.2f}")
+
+# Регрессия
+# Генерация данных
+X, y = make_regression(n_samples=100, n_features=1, noise=0.1)
+
+# Разделение данных
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
+
+# Обучение модели
+reg = LinearRegression()
+reg.fit(X_train, y_train)
+
+# Оценка модели
+train_mse = mean_squared_error(y_train, reg.predict(X_train))
+test_mse = mean_squared_error(y_test, reg.predict(X_test))
+
+print(f"Train MSE: {train_mse:.2f}")
+print(f"Test MSE: {test_mse:.2f}")
