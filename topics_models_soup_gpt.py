@@ -11,14 +11,18 @@ import random
 def fix_unicode(text):
     return text.replace(u"\u2019", "'")  # изменение кодировки
 
-url = "http://radar.oreilly.com/2010/06/what-is-data-science.html"  # сохраняем сайт в переменную
+# url = "http://radar.oreilly.com/2010/06/what-is-data-science.html" # сохраняем сайт в переменную
+url = "http://radar.oreilly.com/category/browse-subjects/data.do?sortby=publicationDate&page=1"  # сохраняем сайт в переменную
+# url = "https://www.e-disclosure.ru/portal/company.aspx?id=4543"  # сохраняем сайт в переменную
 html = requests.get(url).text  # requests.get - запрос сайта по адресу из переменной url, .text - очистка от тегов и тд
-soup = BeautifulSoup(html, 'lxml')  # 'html5lib' - парсер, формат возвращаемого текста из переменной html
+
+soup = BeautifulSoup(html, 'html5lib')  # 'html5lib' - парсер, формат возвращаемого текста из переменной html
+
 
 # TODO Выведем все классы у `div`, чтобы понять, какие есть
 for div in soup.find_all("div"):
-    ...
-    # print(div.get("class"))
+
+    print(div.get("class"))
 
 # TODO Вывод ограниченного числа Символов html, в данном случае 20000
 # print(html[:20000])
@@ -29,7 +33,7 @@ text = soup.p.text
 print(text)
 print(text.split())
 
-content = soup.find("div", class_="content")  # Тег "div" по которому будем искать в html слова или символы
+content = soup.find("div", class_="content")  # Тег "div" по которому будем искать в html слова или символы из класса content
 print(content)
 regex = r"[\w']+|[\.]"  # re выбирает слова из тега "div" класса "entry-content"
 
