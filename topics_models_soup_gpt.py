@@ -29,26 +29,33 @@ for div in soup.find_all("div"):
 
 
 # TODO Вывод текста тега <p> в чистом виде
-text = soup.p.text
-print(text)
+text = soup.a.text
+print(text, '*****************************')
 print(text.split())
 
+# TODO Выбираем нужный класс class_="content"
 content = soup.find("div", class_="content")  # Тег "div" по которому будем искать в html слова или символы из класса content
 print(content)
-regex = r"[\w']+|[\.]"  # re выбирает слова из тега "div" класса "entry-content"
+
+# TODO шаблон для извлечения текста из paragraph.text
+regex = r"[\w']+|[\.]"  # шаблон regex выбирает слова из тега "div" класса "content"
 
 document_radar = []
 print(document_radar)
 
-for paragraph in content("p"):  # извлекаем текст с тегом <р> из ("div", "entry-content")
-    words = re.findall(regex, fix_unicode(paragraph.text))  # отбор с помощью re слов
+# TODO извлекаем текст с тегом <a> из класса ("div", "entry-content"), fix_unicode - обращение за парсером
+for paragraph in content('a'):  # извлекаем текст с тегом <a> из ("div", "entry-content")
+    # print(paragraph, '>>')
+    words = re.findall(regex, fix_unicode(paragraph.text))  # отбор с помощью re слов и парсера из fix_unicode
     document_radar.extend(words)
-    # print(document_radar)
+    print(document_radar)
 
 
-# documents = [document_radar]
-# Предположим, у вас есть некоторые текстовые документы
-# documents = [
+documents = [document_radar]
+
+# TODO Текстовые документы для Пробной прокрутки
+#Предположим, у вас есть некоторые текстовые документы
+#documents = [
 #     "apple orange banana",
 #     "banana apple",
 #     "orange apple",
@@ -63,6 +70,9 @@ for paragraph in content("p"):  # извлекаем текст с тегом <�
 
 # Разбиваем документы на токены
 tokenized_documents = [document.split() for document in document_radar]
+
+# TODO Пробный запуск с текстовыми документами documents
+# tokenized_documents = [document.split() for document in documents]
 # print(tokenized_documents, "tokenized_documents")
 
 
@@ -84,7 +94,7 @@ print(lda_model, "lda_model")
 # Выводим темы и их распределение слов
 for topic_id, topic_words in lda_model.print_topics():
     # pass
-    print(f"Topic {topic_id}: {topic_words}")
+    print(f"Topic {topic_id}: {topic_words}", '<<<<<<<<<<<<<<<<<')
 
 
 # Печатаем распределение тем для каждого документа
