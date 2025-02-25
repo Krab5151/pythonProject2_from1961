@@ -14,6 +14,8 @@ def fix_unicode(text):
 # url = "http://radar.oreilly.com/2010/06/what-is-data-science.html" # сохраняем сайт в переменную
 url = "http://radar.oreilly.com/category/browse-subjects/data.do?sortby=publicationDate&page=1"  # сохраняем сайт в переменную
 # url = "https://www.e-disclosure.ru/portal/company.aspx?id=4543"  # сохраняем сайт в переменную
+
+# TODO .text - очистка от тегов и тд сразу при получении ответа на запрос
 html = requests.get(url).text  # requests.get - запрос сайта по адресу из переменной url, .text - очистка от тегов и тд
 
 soup = BeautifulSoup(html, 'html5lib')  # 'html5lib' - парсер, формат возвращаемого текста из переменной html

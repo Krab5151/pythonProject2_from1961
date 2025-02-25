@@ -11,15 +11,26 @@ import csv
 
 CSV = "cards.csv"
 
+# HEADERS = {
+#     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+#     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
+# }
+
 HEADERS = {
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
-}
-HOST = "https://deltaks.ru/"  # вытащить можно только data из url передано в BS, HOST всегда оканчивается "/"
+ "Accept": "?ysclid=m7k9au82m338007291",
+ "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
+ }
 
-URL_ABOUT = "https://deltaks.ru/Shop/About/"  # url для EX сведений о компании
 
-URL_ARTIKLE = "https://deltaks.ru/Shop/Article"  # url для extract(ЕХ) статей
+# HOST = "https://deltaks.ru/"  # вытащить можно только data из url передано в BS, HOST всегда оканчивается "/"
+
+
+HOST = "https://stmgroup.ru/"
+
+
+URL_ABOUT = "https://stmgroup.ru/Shop/About/"  # url для EX сведений о компании
+
+URL_ARTIKLE = "https://stmgroup.ru/Shop/Article"  # url для extract(ЕХ) статей
 
 
 # TODO ask
@@ -33,7 +44,7 @@ def ask_soup(
         html.text, "lxml"
     )  # soup - ЭКЗ класса BS, 'lxml' - парсер которым будем пользоваться
 
-# TODO "Методы BeautifulSoup"
+    # TODO "Методы BeautifulSoup"
 
     # print("HTML: {0}, name:{1}, text: {2}".format(soup.div, soup.div.name, soup.div.text), "\n")  # вывод тега и его содержимого
 
@@ -83,9 +94,9 @@ def ask_soup(
     # content_1 = soup.find("div", class_="container").find("div", class_="container").find(find\
     #     #     ("div", class_="container body-content")) \
     #     .find("span", style="margin-left: 40px")
-# TODO cards
+    # TODO cards
     cards = []
-# TODO "ВАЖНО! Правильно составить доступ к родителю, очерёдность методов find и find_all"
+    # TODO "ВАЖНО! Правильно составить доступ к родителю, очерёдность методов find и find_all"
     contents = soup.find("div", id="index").find_all(
         "div", class_="card card-body flex-fill my-flex"
     )  # id - родитель для каталога
@@ -103,9 +114,7 @@ def ask_soup(
         print("Error")
 
 
-# TODO parser
-
-
+# TODO сохранение в csv
 def save_cards(path):  # сохранение в csv
     content = ask_soup(HOST)
     with open(path, "w", newline="") as file:
