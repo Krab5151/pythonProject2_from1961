@@ -6,12 +6,12 @@ import random
 import pprint
 
 
-# TODO Два способа извлечения схемы доступа URL
+# TODO Два способа извлечения и удаления  схемы доступа URL -> 'https://'
 
 web_url = "https://academy-data-science.eduson.tv/ru"
 
 
-def extract_url_without_scheme(web_url):
+def extract_url_from_scheme(web_url):
     # паттерн для изъятия схемы доступа
     r = r"(^[a-zA-Z]+://)"
     scheme = re.findall(r, web_url)
@@ -31,7 +31,7 @@ def extract_url_without_scheme(web_url):
     )
 
 
-print(extract_url_without_scheme(web_url))
+print(extract_url_from_scheme(web_url))
 
 
 def fix_unicode(text):
@@ -47,15 +47,15 @@ soup = BeautifulSoup(
     html, "html5lib"
 )  # 'html5lib' - формат возвращаемого текста из переменной html
 
-content = soup.find("div", "entry-content")  #
+content = soup.find("div", "content")  #
 regex = r"[\w']+|[\.]"  # re выбирает слова из тега "div" класса "entry-content"
 
 document = []
 
 
 for paragraph in content(
-    "p"
-):  # извлекаем текст с тегом <р> из ("div", "entry-content")
+    'a'
+):  # извлекаем текст с тегом <a> из ("div", "content")
     words = re.findall(regex, fix_unicode(paragraph.text))  # отбор с помощью re слов
     document.extend(words)
     print(document)
