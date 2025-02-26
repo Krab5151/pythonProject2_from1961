@@ -55,11 +55,13 @@ else:
 categories = soup.find_all("li", class_="side-catalog__item")
 # print(categories, '>>>>>>>>>>>>>>>>')
 
-text_vs_category = [i.text for i in categories]
+# TODO i.stripped_strings - вариант удаления html символов на лету
+# text_vs_category = [list(i.stripped_strings) for i in categories]
 # print(text_vs_category)
 
-# for i in pt:
-#     print(i)
+# TODO text_vs_category - подготовка для удаления html символов
+text_vs_category = [i.text for i in categories]
+# print(text_vs_category)
 
 
 # TODO Удаление \n \r \t с помощью re.sub

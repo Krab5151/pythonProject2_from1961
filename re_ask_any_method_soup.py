@@ -101,7 +101,8 @@ def ask_soup(
         "div", class_="card card-body flex-fill my-flex"
     )  # id - родитель для каталога
 
-    if html.status_code == 200:  # проверка на отклик сайта
+    # TODO  проверка на отклик сайта
+    if html.status_code == 200:
         for content in contents:  # форлуп вы атрибутов в теге "а"
             total_cards = {
                 "title_": content.find("a").find("img").get("title"),
